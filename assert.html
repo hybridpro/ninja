@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>Test Suite</title>
+<script>
+
+function assert(value, message) {
+	var li = document.createElement("li");
+	li.className = value ? "pass" : "fail";
+	li.appendChild(document.createTextNode(message));
+	document.getElementById("asserts").appendChild(li);
+	}
+	window.onload = function(){
+		assert(true, "This should be highlighted green");
+		assert(false, "This should be highlighted red");
+	};
+	</script>
+	<style>
+		#asserts li.pass{color : green;}
+		#asserts li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="asserts"></ul>
+</body>
+</html>
+	

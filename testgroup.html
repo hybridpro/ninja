@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>Test Suite</title>
+<script>
+
+	(function(){
+		var allResults;
+		this.assert = function(value, message){
+			var li = document.createElement("li");
+			li.className = value ? "pass" : "fail";
+			li.appendChild(document.createTextNode(message));
+			allResults.appendChild(li);
+			if(!value){
+				li.parentNode.parentNode.className = "fail";
+			}
+			return li;
+		};
+		
+		this.testGroup = function(groupName, fnToExec) {
+			allResults = document.getElementById("allResults");
+			allResults = assert(true, groupName).appendChild(document.createElement("ul"));
+			fnToExec();
+		};
+		
+		window.onload = function(){
+			testGroup("All Pass", function(){
+				assert(true, "This should pass");
+				assert(true, "This should pass as well");
+			});
+			testGroup("All Fail", function(){
+				assert(false, "This should fail");
+				assert(false, "This should fail as well");
+			});
+			testGroup("One pass One fail", function(){
+				assert(true, "This should pass");
+				assert(false, "This should fail");
+			});
+		};
+	}());
+	</script>
+	<style>
+		#allResults li.pass{color : green;}
+		#allResults li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="allResults">All Test Groups</ul>
+</body>
+</html>
