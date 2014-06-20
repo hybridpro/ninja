@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>Test Suite</title>
+<script>
+
+	(function(){
+	
+		var allAsyncResults, eventQueue = [], paused = false;
+		
+		//assert to show results of the events
+		this.assert = function(value, message){
+			var li = document.createElement("li");
+			li.className = value ? "pass" : "fail";
+			li.appendChild(document.createTextNode(message));
+			allAsyncResults.appendChild(li);
+			if(!value){
+				li.parentNode.parentNode.className = "fail";
+			}
+			return li;
+		};
+		
+		//asynchronous test function to call. It creates 
+		//a branch for the whole test group and then appends 
+		//the function to run in the event queue
+		this.asyncTest = function(name, fnToExec) {
+			eventQueue.push(function(){
+				allAsyncResults = document.getElementById("allAsyncResults");
+				
+				//create the root node first
+				allAsyncResults = assert(true, name).appendChild(document.createElement("ul"));
+				fnToExec();
+			});
+			runTest();
+		};
+		
+		this.runTest = function(){
+			if(!paused && eventQueue.length){
+				eventQueue.shift()();
+				if(!paused)
+					resume();
+			}
+		}
+		
+		this.resume = function(){
+			paused = false;
+			setTimeout(runTest(), 1);
+		}
+		
+		this.pausieren = function(){
+			paused = true;
+		}
+		
+		window.onload = function(){
+			asyncTest("First Async Test : ", function(){
+				pausieren();
+				setTimeout(function(){
+					assert(true, "This is working out as expected");
+					assert(false, "Oh darn it!");
+					resume();
+				}, 1000);
+			});
+			asyncTest("Second Async Test : ", function(){
+				pausieren();
+				setTimeout(function(){
+					assert(true, "This is working out as expected as well");
+					resume();
+				}, 1000);
+			});
+		};
+	}());
+	</script>
+	<style>
+		#allAsyncResults li.pass{color : green;}
+		#allAsyncResults li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="allAsyncResults">All Test Groups</ul>
+</body>
+</html>
