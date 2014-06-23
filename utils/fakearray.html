@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Ninja Utilities</title>
+<script>
+
+	function assert(value, message) {
+		var li = document.createElement("li");
+		li.className = value ? "pass" : "fail";
+		li.appendChild(document.createTextNode(message));
+		document.getElementById("asserts").appendChild(li);
+	}
+	
+	var elems = {
+		length : 0,
+		coagulate : function(elementId){
+			this.addElement(document.getElementById(elementId));
+		},
+		addElement : function(element){
+			Array.prototype.push.call(this, element);
+		}
+	};
+	
+	window.onload = function(){
+		elems.coagulate("elementUno");
+		assert(elems.length == 1, "One element added");
+		
+		elems.coagulate("elementDeux");
+		assert(elems.length == 2, "Two elements added");
+		
+		elems.coagulate("elementDrei");
+		assert(elems.length == 3, "Three elements added");	
+	}	
+	
+	</script>
+	<style>
+		#asserts li.pass{color : green;}
+		#asserts li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="elementUno"></ul>
+	<ul id="elementDeux"></ul>
+	<ul id="elementDrei"></ul>
+	<ul id="asserts"></ul>
+</body>
+</html>
