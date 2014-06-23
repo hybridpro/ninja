@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>Ninja Utilities</title>
+<script>
+
+	function assert(value, message) {
+		var li = document.createElement("li");
+		li.className = value ? "pass" : "fail";
+		li.appendChild(document.createTextNode(message));
+		document.getElementById("asserts").appendChild(li);
+	}
+	
+	var functionStore = {
+		storeCount : 0,
+		
+		functionCache : {},
+		
+		addFunction : function(fn){
+		
+			if(!fn.id){
+				fn.id = this.storeCount++;
+				
+				// The operator !! turns any data type to a boolean. 
+				// Here the return type function is turned to 'true'.
+				return !!(this.functionCache[fn.id] = fn);
+			}
+			
+		}
+	};
+	
+	window.onload = function(){
+		var func1 = function(){};
+		var func2 = function(){};
+		var func3 = function(){};
+		
+		functionStore.addFunction(func1);
+		functionStore.addFunction(func2);
+		functionStore.addFunction(func3);
+		
+		assert(functionStore.storeCount == 3, "All functions added");
+		
+		assert(!functionStore.addFunction(func3), "Attempt to add the same function again doesn't fly.");
+	}
+	
+	</script>
+	<style>
+		#asserts li.pass{color : green;}
+		#asserts li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="asserts"></ul>
+</body>
+</html>
