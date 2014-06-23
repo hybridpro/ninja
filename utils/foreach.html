@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Test Suite</title>
+<script>
+
+	function assert(value, message) {
+		var li = document.createElement("li");
+		li.className = value ? "pass" : "fail";
+		li.appendChild(document.createTextNode(message));
+		document.getElementById("asserts").appendChild(li);
+		}
+	
+	function foreach(collection, callbackFn){
+		var isArray = (collection instanceof Array);
+		var isFunction = (typeof callbackFn == 'function');
+		assert(isArray, "The first argument is indeed an array");
+		assert(isFunction, "The second argument is indeed a function");
+		
+		if(isArray && isFunction){
+			for(var index = 0; index < collection.length; index++){
+				callbackFn.call(collection[index], index);
+			}	
+		}
+	}
+	
+	window.onload = function(){
+		var argumentos = [1, 2, 3];
+		var dummyFunc = function(index){return this;};
+		foreach(argumentos, dummyFunc);
+	}
+	
+	</script>
+	<style>
+		#asserts li.pass{color : green;}
+		#asserts li.fail{color : red;}
+	</style>
+</head>
+<body>
+	<ul id="asserts"></ul>
+</body>
+</html>
+	
